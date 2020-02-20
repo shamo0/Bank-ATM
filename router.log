@@ -1,0 +1,72 @@
+Message from BANK
+-----------------------
+Type: <class 'str'>
+Raw pickle data: b'\x80\x03X\x11\x00\x00\x00deposit alice 100q\x00.'
+Contents: deposit alice 100
+
+Message from BANK
+-----------------------
+Type: <class 'str'>
+Raw pickle data: b'\x80\x03X\r\x00\x00\x00balance aliceq\x00.'
+Contents: balance alice
+
+Message from ATM
+-----------------------
+Type: <class 'str'>
+Raw pickle data: b'\x80\x03X\x18\x00\x00\x00begin-session Alice.cardq\x00.'
+Contents: begin-session Alice.card
+
+Message from BANK
+-----------------------
+Type: <class 'str'>
+Raw pickle data: b'\x80\x03X\x18\x00\x00\x00begin-session Alice.cardq\x00.'
+Contents: begin-session Alice.card
+
+Message from ATM
+-----------------------
+Type: <class 'str'>
+Raw pickle data: b'\x80\x03X\x0c\x00\x00\x00withdraw 100q\x00.'
+Contents: withdraw 100
+
+Message from BANK
+-----------------------
+Type: <class 'str'>
+Raw pickle data: b'\x80\x03X\x0c\x00\x00\x00withdraw 100q\x00.'
+Contents: withdraw 100
+
+Message from ATM
+-----------------------
+Type: <class 'str'>
+Raw pickle data: b'\x80\x03X\r\x00\x00\x00begin-sessionq\x00.'
+Contents: begin-session
+
+Message from BANK
+-----------------------
+Type: <class 'str'>
+Raw pickle data: b'\x80\x03X\r\x00\x00\x00begin-sessionq\x00.'
+Contents: begin-session
+
+Message from ATM
+-----------------------
+Type: <class 'str'>
+Raw pickle data: b'\x80\x03X\x18\x00\x00\x00begin-session Alice.cardq\x00.'
+Contents: begin-session Alice.card
+
+Message from BANK
+-----------------------
+Type: <class 'str'>
+Raw pickle data: b'\x80\x03X\x18\x00\x00\x00begin-session Alice.cardq\x00.'
+Contents: begin-session Alice.card
+
+Message from ATM
+-----------------------
+Type: <class 'str'>
+Raw pickle data: b'\x80\x03X\x07\x00\x00\x00balanceq\x00.'
+Contents: balance
+
+Message from BANK
+-----------------------
+Type: <class 'str'>
+Raw pickle data: b'\x80\x03X\x07\x00\x00\x00balanceq\x00.'
+Contents: balance
+
