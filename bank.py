@@ -4,7 +4,7 @@ import select
 import sys
 import pickle
 from atm import *
-
+import json
 
 class bank:
   def __init__(self):
@@ -17,7 +17,7 @@ class bank:
     # etc.
     #====================================================================
     self.balances = {"alice":100,"bob":100,"carol":0}
-    # self.PINS = {}
+    self.PINS = {'alice':'1111','bob':'2222','carol':'3333'}
 
 
   #====================================================================
@@ -35,11 +35,15 @@ class bank:
     if stringParts[0].lower() == "deposit":
         self.balances[stringParts[1].lower()] += int(stringParts[2])
         print("$"+str(stringParts[2]) + " added to " + stringParts[1]+"'s account")
+        diction = {'operation':'deposit','user':stringParts[1].lower()}
+        outObj = json.dumps(diction)
+
 
     elif (stringParts[0].lower() == "balance"):
         if (stringParts[1].lower() in self.balances):
             print("$" + str(self.balances[stringParts[1].lower()]) + "\n")
-
+            diction = {'operation':'returnBalance','user':stringParts[1],'balance':self.balances[stringPars[1].lower()}
+            outObj = json.dumps(diction)
     else:
         print("Error")
   #====================================================================
@@ -56,6 +60,7 @@ class bank:
     print("\nFrom ATM: ", inObject )
     self.send(inObject)
     print(inObject)
+    objects = json.loads(inObject)
 
 
 

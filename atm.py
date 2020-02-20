@@ -21,7 +21,7 @@ class atm:
     #====================================================================
     self.loggedIn = False
     self.user = None
-
+    self.users = {'1234': "alice",'4321':"bob",'9999':'carol'}
 
 
   #====================================================================
@@ -37,15 +37,14 @@ class atm:
     self.send(inString)
 
     if inString.split(' ')[0]=="begin-session":
-        fdRead = (open(inString.split(" ")[1],'rb')).read()
-        (open('Inserted.card','wb')).write(fdRead)
-
-        insert =(open('Inserted.card','rb')).read()
-        inputCard = bytes((input("Please enter your PIN: ")),'utf-8')
-        print(inputCard)
         
+        insert = (open("Inserted.card",'rb')).read()
+
+        inputCard = bytes((input("Please enter your PIN: ")),'utf-8')
+
         if inputCard == insert.strip():
             self.loggedIn = True
+            self.user = self.users[insert] 
             self.user = (inString.split(" ")[1]).split(".")[0]
             print("authorized")
         else:
