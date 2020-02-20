@@ -1,0 +1,33 @@
+For all of these, they will be signed by the private keys of the 
+bank or atm depending on the originator.
+
+ATM -> BANK, what if we used json? json.dumps(dict) before transmission, json.loads(str) on recv
+=====================
+Begin session:
+{operation: begin, user: userID, Auth(pin/key): pin}
+
+Withdraw:
+{operation: withdraw, user: userID, Auth(pin/key): pin, amount: amnt}
+
+Balance:
+{operation: balance, user: userID, Auth(pin/key): pin}
+
+end-session: 
+just end for now, could implement session tokens later
+
+BANK -> ATM
+=====================
+After getting a begin session:
+{operation: responseStartSession, user: userID}
+
+On Bank Deposit:
+{operation: onBankDeposit, user: userID}
+
+After getting a balance request:
+{operation: returnBalance, user: userID, balance: balance}
+
+AFter getting a withdrawal:
+{operation: returnBalance, user: userID, amount: amount, sucess:bool}
+
+On an error (impossible withdrawal, wrong pin, bad balance req):
+{operation: returnError, user: userID}
