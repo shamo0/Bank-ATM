@@ -4,6 +4,8 @@ import select
 import sys
 import json
 import pickle
+import time
+import traceback
 from bank import *
 
 
@@ -21,7 +23,6 @@ class atm:
     #====================================================================
     self.loggedIn = False
     self.user = None
-    self.users = {'1234': "alice",'4321':"bob",'9999':'carol'}
 
 
   #====================================================================
@@ -34,35 +35,57 @@ class atm:
   # the bank.
   #====================================================================
   def handleLocal(self,inString):
-    self.send(inString)
+    #self.send(inString)
+    message = {
+      'operation':'',
+      'user':'',
+      'auth':'',
+      'amount': ''
+    }
 
     if inString.split(' ')[0]=="begin-session":
-        
-        insert = (open("Inserted.card",'rb')).read()
+      message['user'] = (open("Inserted.card",'r')).read().rstrip()
+      message['auth'] = (input("Please enter your PIN: "))
+      message['operation'] = 'begin'
+      self.send(message)
 
-        inputCard = bytes((input("Please enter your PIN: ")),'utf-8')
-
-        if inputCard == insert.strip():
-            self.loggedIn = True
-            self.user = self.users[insert] 
-            self.user = (inString.split(" ")[1]).split(".")[0]
-            print("authorized")
-        else:
-            print("Error")
+        # if inputCard == insert.strip():
+        #     self.loggedIn = True
+        #     self.user = self.users[insert] 
+        #     self.user = (inString.split(" ")[1]).split(".")[0]
+        #     print("authorized")
+        # else:
+        #     print("Error")
 
     elif (inString.split(" "))[0]=="withdraw":
-        bank.self.balances[self.user] -= int(inString.split(" ")[1])
-        print("$" + str(bank.self.balances[self.user]) + "dispensed")
+      if not self.loggedIn: print('Not Logged in!'); return
+      message['operation'] = 'withdraw'
+      message['user'] = self.user
+      #add auth token here
+      try:
+        message['amount'] = int(inString.split(" ")[1])
+      except ValueError:
+        print("Could not convert to int")
+        return
+      self.send(message)
+        # bank.self.balances[self.user] -= int(inString.split(" ")[1])
+        # print("$" + str(bank.self.balances[self.user]) + "dispensed")
 
     elif inString=="balance":
-        string = "balance " + str(self.user).lower()
-        print(string)
-        print(bank.self.handleLocal(string))
+      if not self.loggedIn: print('Not Logged in!'); return
+      message['operation']='balance'
+      message['user'] = self.user
+      #add auth token here
+      self.send(message)
+        # string = "balance " + str(self.user).lower()
+        # print(string)
+        # print(bank.self.handleLocal(string))
 
     elif inString=="end-session":
-        print(self.user+"logged out")
-        self.loggedIn = False
-        self.user = None
+      if not self.loggedIn: print("Not Logged in!"); return
+      print(self.user+"logged out")
+      self.loggedIn = False
+      self.user = None
 
     else:
         return
@@ -78,6 +101,25 @@ class atm:
   #====================================================================
   def handleRemote(self, inObject):
     print("From Bank: ", inObject)
+    try:
+      if inObject['operation'] == 'responseStartSession':
+        self.loggedIn = True
+        self.user = inObject['user']
+        print('authorized')
+      elif inObject['operation'] == 'responseWithdrawal':
+        if inObject['success']:
+          print("$" + str(inObject['amount']) + " dispensed")
+        else:
+          print("Invalid amount")
+      elif inObject['operation'] == 'responseBalance':
+        print("balance: " + str(inObject['amount']))
+      elif inObject['operation'] == "responseError":
+        print("Bank error: " + inObject['msg'])
+      else:
+        raise Exception(inObject)
+    except Exception as e:
+      text = traceback.format_exc()
+      print("Invalid message received from bank: "+ text)
 
 
   #====================================================================

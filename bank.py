@@ -4,6 +4,7 @@ import select
 import sys
 import pickle
 from atm import *
+import traceback
 import json
 
 class bank:
@@ -17,7 +18,7 @@ class bank:
     # etc.
     #====================================================================
     self.balances = {"alice":100,"bob":100,"carol":0}
-    self.PINS = {'alice':'1111','bob':'2222','carol':'3333'}
+    self.pins = {'alice':'1111','bob':'2222','carol':'3333'}
 
 
   #====================================================================
@@ -29,23 +30,30 @@ class bank:
   # this string to deposit money, check balance, etc.
   #====================================================================
   def handleLocal(self,inString):
-    self.send(inString)
     stringParts = inString.split()
 
     if stringParts[0].lower() == "deposit":
+      if len(stringParts) != 3:
+        print("Invalid command!")
+        return
+      try:
         self.balances[stringParts[1].lower()] += int(stringParts[2])
         print("$"+str(stringParts[2]) + " added to " + stringParts[1]+"'s account")
-        diction = {'operation':'deposit','user':stringParts[1].lower()}
-        outObj = json.dumps(diction)
+      except KeyError:
+        print("Account does not exist")
 
 
     elif (stringParts[0].lower() == "balance"):
+      if len(stringParts) != 2:
+        print("Invalid command!")
+        return
+      try:
         if (stringParts[1].lower() in self.balances):
             print("$" + str(self.balances[stringParts[1].lower()]) + "\n")
-            diction = {'operation':'returnBalance','user':stringParts[1],'balance':self.balances[stringPars[1].lower()}
-            outObj = json.dumps(diction)
+      except KeyError:
+        print("Account does not exist")
     else:
-        print("Error")
+        print("Invalid command!")
   #====================================================================
   # TO DO: Modify the following function to handle the atm request
   # Every time a message is received from the ATM, it comes to this
@@ -57,10 +65,46 @@ class bank:
   # and sends the same message back to the ATM.
   #====================================================================
   def handleRemote(self, inObject):
-    print("\nFrom ATM: ", inObject )
-    self.send(inObject)
-    print(inObject)
-    objects = json.loads(inObject)
+    print("From ATM: ", inObject) #Debug
+    message = dict()
+    try:
+      if inObject['operation'] == 'begin':
+        if self.pins[inObject['user']] == inObject['auth']: # Throws keyerror when user not in dict
+          message['operation'] = 'responseStartSession'
+          message['user'] = inObject['user']
+          self.send(message)
+        else:
+          message['operation'] = 'responseError'
+          message['msg'] = 'Invalid pin!'
+          self.send(message)
+      elif inObject['operation'] == 'withdraw':
+        #Check auth token
+        message['operation'] = 'responseWithdrawal'
+        if (int(self.balances[inObject['user']]) >= int(inObject['amount']) and int(inObject['amount']) > 0):
+          message['success'] = True
+          message['amount'] = inObject['amount']
+          self.balances[inObject['user']] -= inObject['amount']
+          self.send(message)
+        else:
+          message['success'] = False
+          message['amount'] = str(0) 
+          self.send(message) 
+      elif inObject['operation'] == 'balance':
+        #Check auth
+        message['operation'] = 'responseBalance'
+        message['amount'] = self.balances[inObject['user']]
+        self.send(message)
+      else:
+        message['operation'] = 'responseError'
+        message['msg'] = 'Unhandled command'
+        self.send(message)
+    except Exception as e:
+      text = traceback.format_exc()
+      message['operation'] = 'responseError'
+      message['msg'] = 'Invalid command'
+      self.send(message)
+      print("Recv error: " + text)
+
 
 
 

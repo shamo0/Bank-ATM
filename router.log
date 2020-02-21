@@ -1,72 +1,293 @@
-Message from BANK
+Message from ATM
 -----------------------
-Type: <class 'str'>
-Raw pickle data: b'\x80\x03X\x11\x00\x00\x00deposit alice 100q\x00.'
-Contents: deposit alice 100
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x05\x00\x00\x00beginq\x02X\x04\x00\x00\x00userq\x03C\x06Alice\nq\x04X\x04\x00\x00\x00authq\x05C\x041111q\x06X\x06\x00\x00\x00amountq\x07X\x00\x00\x00\x00q\x08u.'
+Contents: {'operation': 'begin', 'user': b'Alice\n', 'auth': b'1111', 'amount': ''}
 
 Message from BANK
 -----------------------
-Type: <class 'str'>
-Raw pickle data: b'\x80\x03X\r\x00\x00\x00balance aliceq\x00.'
-Contents: balance alice
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\r\x00\x00\x00responseErrorq\x02X\x03\x00\x00\x00msgq\x03X\x0f\x00\x00\x00Invalid commandq\x04u.'
+Contents: {'operation': 'responseError', 'msg': 'Invalid command'}
 
 Message from ATM
 -----------------------
-Type: <class 'str'>
-Raw pickle data: b'\x80\x03X\x18\x00\x00\x00begin-session Alice.cardq\x00.'
-Contents: begin-session Alice.card
-
-Message from BANK
------------------------
-Type: <class 'str'>
-Raw pickle data: b'\x80\x03X\x18\x00\x00\x00begin-session Alice.cardq\x00.'
-Contents: begin-session Alice.card
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x05\x00\x00\x00beginq\x02X\x04\x00\x00\x00userq\x03C\x06alice\nq\x04X\x04\x00\x00\x00authq\x05C\x041111q\x06X\x06\x00\x00\x00amountq\x07X\x00\x00\x00\x00q\x08u.'
+Contents: {'operation': 'begin', 'user': b'alice\n', 'auth': b'1111', 'amount': ''}
 
 Message from ATM
 -----------------------
-Type: <class 'str'>
-Raw pickle data: b'\x80\x03X\x0c\x00\x00\x00withdraw 100q\x00.'
-Contents: withdraw 100
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x05\x00\x00\x00beginq\x02X\x04\x00\x00\x00userq\x03C\x05aliceq\x04X\x04\x00\x00\x00authq\x05C\x041111q\x06X\x06\x00\x00\x00amountq\x07X\x00\x00\x00\x00q\x08u.'
+Contents: {'operation': 'begin', 'user': b'alice', 'auth': b'1111', 'amount': ''}
 
 Message from BANK
 -----------------------
-Type: <class 'str'>
-Raw pickle data: b'\x80\x03X\x0c\x00\x00\x00withdraw 100q\x00.'
-Contents: withdraw 100
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\r\x00\x00\x00responseErrorq\x02X\x03\x00\x00\x00msgq\x03X\x0f\x00\x00\x00Invalid commandq\x04u.'
+Contents: {'operation': 'responseError', 'msg': 'Invalid command'}
 
 Message from ATM
 -----------------------
-Type: <class 'str'>
-Raw pickle data: b'\x80\x03X\r\x00\x00\x00begin-sessionq\x00.'
-Contents: begin-session
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x05\x00\x00\x00beginq\x02X\x04\x00\x00\x00userq\x03X\x05\x00\x00\x00aliceq\x04X\x04\x00\x00\x00authq\x05C\x041111q\x06X\x06\x00\x00\x00amountq\x07X\x00\x00\x00\x00q\x08u.'
+Contents: {'operation': 'begin', 'user': 'alice', 'auth': b'1111', 'amount': ''}
 
 Message from BANK
 -----------------------
-Type: <class 'str'>
-Raw pickle data: b'\x80\x03X\r\x00\x00\x00begin-sessionq\x00.'
-Contents: begin-session
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\r\x00\x00\x00responseErrorq\x02X\x03\x00\x00\x00msgq\x03X\x0f\x00\x00\x00Invalid commandq\x04u.'
+Contents: {'operation': 'responseError', 'msg': 'Invalid command'}
 
 Message from ATM
 -----------------------
-Type: <class 'str'>
-Raw pickle data: b'\x80\x03X\x18\x00\x00\x00begin-session Alice.cardq\x00.'
-Contents: begin-session Alice.card
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x05\x00\x00\x00beginq\x02X\x04\x00\x00\x00userq\x03X\x05\x00\x00\x00aliceq\x04X\x04\x00\x00\x00authq\x05X\x04\x00\x00\x001111q\x06X\x06\x00\x00\x00amountq\x07X\x00\x00\x00\x00q\x08u.'
+Contents: {'operation': 'begin', 'user': 'alice', 'auth': '1111', 'amount': ''}
 
 Message from BANK
 -----------------------
-Type: <class 'str'>
-Raw pickle data: b'\x80\x03X\x18\x00\x00\x00begin-session Alice.cardq\x00.'
-Contents: begin-session Alice.card
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\r\x00\x00\x00responseErrorq\x02X\x03\x00\x00\x00msgq\x03X\x0f\x00\x00\x00Invalid commandq\x04u.'
+Contents: {'operation': 'responseError', 'msg': 'Invalid command'}
 
 Message from ATM
 -----------------------
-Type: <class 'str'>
-Raw pickle data: b'\x80\x03X\x07\x00\x00\x00balanceq\x00.'
-Contents: balance
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x05\x00\x00\x00beginq\x02X\x04\x00\x00\x00userq\x03X\x05\x00\x00\x00aliceq\x04X\x04\x00\x00\x00authq\x05X\x04\x00\x00\x001111q\x06X\x06\x00\x00\x00amountq\x07X\x00\x00\x00\x00q\x08u.'
+Contents: {'operation': 'begin', 'user': 'alice', 'auth': '1111', 'amount': ''}
 
 Message from BANK
 -----------------------
-Type: <class 'str'>
-Raw pickle data: b'\x80\x03X\x07\x00\x00\x00balanceq\x00.'
-Contents: balance
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\r\x00\x00\x00responseErrorq\x02X\x03\x00\x00\x00msgq\x03X\x0f\x00\x00\x00Invalid commandq\x04u.'
+Contents: {'operation': 'responseError', 'msg': 'Invalid command'}
 
+Message from ATM
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x05\x00\x00\x00beginq\x02X\x04\x00\x00\x00userq\x03X\x05\x00\x00\x00aliceq\x04X\x04\x00\x00\x00authq\x05X\x04\x00\x00\x001111q\x06X\x06\x00\x00\x00amountq\x07X\x00\x00\x00\x00q\x08u.'
+Contents: {'operation': 'begin', 'user': 'alice', 'auth': '1111', 'amount': ''}
+
+Message from BANK
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\r\x00\x00\x00responseErrorq\x02X\x03\x00\x00\x00msgq\x03X\x0f\x00\x00\x00Invalid commandq\x04u.'
+Contents: {'operation': 'responseError', 'msg': 'Invalid command'}
+
+Message from ATM
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x05\x00\x00\x00beginq\x02X\x04\x00\x00\x00userq\x03X\x05\x00\x00\x00aliceq\x04X\x04\x00\x00\x00authq\x05X\x04\x00\x00\x001111q\x06X\x06\x00\x00\x00amountq\x07X\x00\x00\x00\x00q\x08u.'
+Contents: {'operation': 'begin', 'user': 'alice', 'auth': '1111', 'amount': ''}
+
+Message from BANK
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x14\x00\x00\x00responseStartSessionq\x02X\x04\x00\x00\x00userq\x03X\x05\x00\x00\x00aliceq\x04u.'
+Contents: {'operation': 'responseStartSession', 'user': 'alice'}
+
+Message from ATM
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x07\x00\x00\x00balanceq\x02X\x04\x00\x00\x00userq\x03X\x05\x00\x00\x00aliceq\x04X\x04\x00\x00\x00authq\x05X\x00\x00\x00\x00q\x06X\x06\x00\x00\x00amountq\x07h\x06u.'
+Contents: {'operation': 'balance', 'user': 'alice', 'auth': '', 'amount': ''}
+
+Message from BANK
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x0f\x00\x00\x00responseBalanceq\x02X\x06\x00\x00\x00amountq\x03Kdu.'
+Contents: {'operation': 'responseBalance', 'amount': 100}
+
+Message from ATM
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x05\x00\x00\x00beginq\x02X\x04\x00\x00\x00userq\x03X\x05\x00\x00\x00aliceq\x04X\x04\x00\x00\x00authq\x05X\x04\x00\x00\x001234q\x06X\x06\x00\x00\x00amountq\x07X\x00\x00\x00\x00q\x08u.'
+Contents: {'operation': 'begin', 'user': 'alice', 'auth': '1234', 'amount': ''}
+
+Message from BANK
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\r\x00\x00\x00responseErrorq\x02X\x03\x00\x00\x00msgq\x03X\x0c\x00\x00\x00Invalid pin!q\x04u.'
+Contents: {'operation': 'responseError', 'msg': 'Invalid pin!'}
+
+Message from ATM
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x05\x00\x00\x00beginq\x02X\x04\x00\x00\x00userq\x03X\x05\x00\x00\x00aliceq\x04X\x04\x00\x00\x00authq\x05X\x04\x00\x00\x001111q\x06X\x06\x00\x00\x00amountq\x07X\x00\x00\x00\x00q\x08u.'
+Contents: {'operation': 'begin', 'user': 'alice', 'auth': '1111', 'amount': ''}
+
+Message from BANK
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x14\x00\x00\x00responseStartSessionq\x02X\x04\x00\x00\x00userq\x03X\x05\x00\x00\x00aliceq\x04u.'
+Contents: {'operation': 'responseStartSession', 'user': 'alice'}
+
+Message from ATM
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x07\x00\x00\x00balanceq\x02X\x04\x00\x00\x00userq\x03X\x05\x00\x00\x00aliceq\x04X\x04\x00\x00\x00authq\x05X\x00\x00\x00\x00q\x06X\x06\x00\x00\x00amountq\x07h\x06u.'
+Contents: {'operation': 'balance', 'user': 'alice', 'auth': '', 'amount': ''}
+
+Message from BANK
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x0f\x00\x00\x00responseBalanceq\x02X\x06\x00\x00\x00amountq\x03Kdu.'
+Contents: {'operation': 'responseBalance', 'amount': 100}
+
+Message from ATM
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x08\x00\x00\x00withdrawq\x02X\x04\x00\x00\x00userq\x03X\x05\x00\x00\x00aliceq\x04X\x04\x00\x00\x00authq\x05X\x00\x00\x00\x00q\x06X\x06\x00\x00\x00amountq\x07Keu.'
+Contents: {'operation': 'withdraw', 'user': 'alice', 'auth': '', 'amount': 101}
+
+Message from BANK
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\r\x00\x00\x00responseErrorq\x02X\x03\x00\x00\x00msgq\x03X\x0f\x00\x00\x00Invalid commandq\x04u.'
+Contents: {'operation': 'responseError', 'msg': 'Invalid command'}
+
+Message from ATM
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x08\x00\x00\x00withdrawq\x02X\x04\x00\x00\x00userq\x03X\x05\x00\x00\x00aliceq\x04X\x04\x00\x00\x00authq\x05X\x00\x00\x00\x00q\x06X\x06\x00\x00\x00amountq\x07Keu.'
+Contents: {'operation': 'withdraw', 'user': 'alice', 'auth': '', 'amount': 101}
+
+Message from BANK
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x12\x00\x00\x00responseWithdrawalq\x02X\x07\x00\x00\x00successq\x03\x89X\x06\x00\x00\x00amountq\x04X\x01\x00\x00\x000q\x05u.'
+Contents: {'operation': 'responseWithdrawal', 'success': False, 'amount': '0'}
+
+Message from ATM
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x08\x00\x00\x00withdrawq\x02X\x04\x00\x00\x00userq\x03X\x05\x00\x00\x00aliceq\x04X\x04\x00\x00\x00authq\x05X\x00\x00\x00\x00q\x06X\x06\x00\x00\x00amountq\x07Kdu.'
+Contents: {'operation': 'withdraw', 'user': 'alice', 'auth': '', 'amount': 100}
+
+Message from BANK
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x12\x00\x00\x00responseWithdrawalq\x02X\x07\x00\x00\x00successq\x03\x88X\x06\x00\x00\x00amountq\x04Kdu.'
+Contents: {'operation': 'responseWithdrawal', 'success': True, 'amount': 100}
+
+Message from ATM
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x08\x00\x00\x00withdrawq\x02X\x04\x00\x00\x00userq\x03X\x05\x00\x00\x00aliceq\x04X\x04\x00\x00\x00authq\x05X\x00\x00\x00\x00q\x06X\x06\x00\x00\x00amountq\x07J\xf0\xd8\xff\xffu.'
+Contents: {'operation': 'withdraw', 'user': 'alice', 'auth': '', 'amount': -10000}
+
+Message from BANK
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x12\x00\x00\x00responseWithdrawalq\x02X\x07\x00\x00\x00successq\x03\x88X\x06\x00\x00\x00amountq\x04J\xf0\xd8\xff\xffu.'
+Contents: {'operation': 'responseWithdrawal', 'success': True, 'amount': -10000}
+
+Message from ATM
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x07\x00\x00\x00balanceq\x02X\x04\x00\x00\x00userq\x03X\x05\x00\x00\x00aliceq\x04X\x04\x00\x00\x00authq\x05X\x00\x00\x00\x00q\x06X\x06\x00\x00\x00amountq\x07h\x06u.'
+Contents: {'operation': 'balance', 'user': 'alice', 'auth': '', 'amount': ''}
+
+Message from BANK
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x0f\x00\x00\x00responseBalanceq\x02X\x06\x00\x00\x00amountq\x03Kdu.'
+Contents: {'operation': 'responseBalance', 'amount': 100}
+
+Message from ATM
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x05\x00\x00\x00beginq\x02X\x04\x00\x00\x00userq\x03X\x05\x00\x00\x00aliceq\x04X\x04\x00\x00\x00authq\x05X\x04\x00\x00\x001111q\x06X\x06\x00\x00\x00amountq\x07X\x00\x00\x00\x00q\x08u.'
+Contents: {'operation': 'begin', 'user': 'alice', 'auth': '1111', 'amount': ''}
+
+Message from BANK
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x14\x00\x00\x00responseStartSessionq\x02X\x04\x00\x00\x00userq\x03X\x05\x00\x00\x00aliceq\x04u.'
+Contents: {'operation': 'responseStartSession', 'user': 'alice'}
+
+Message from ATM
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x08\x00\x00\x00withdrawq\x02X\x04\x00\x00\x00userq\x03X\x05\x00\x00\x00aliceq\x04X\x04\x00\x00\x00authq\x05X\x00\x00\x00\x00q\x06X\x06\x00\x00\x00amountq\x07J\xb9\x0b\xef\xffu.'
+Contents: {'operation': 'withdraw', 'user': 'alice', 'auth': '', 'amount': -1111111}
+
+Message from BANK
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x12\x00\x00\x00responseWithdrawalq\x02X\x07\x00\x00\x00successq\x03\x88X\x06\x00\x00\x00amountq\x04J\xb9\x0b\xef\xffu.'
+Contents: {'operation': 'responseWithdrawal', 'success': True, 'amount': -1111111}
+
+Message from ATM
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x07\x00\x00\x00balanceq\x02X\x04\x00\x00\x00userq\x03X\x05\x00\x00\x00aliceq\x04X\x04\x00\x00\x00authq\x05X\x00\x00\x00\x00q\x06X\x06\x00\x00\x00amountq\x07h\x06u.'
+Contents: {'operation': 'balance', 'user': 'alice', 'auth': '', 'amount': ''}
+
+Message from BANK
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x0f\x00\x00\x00responseBalanceq\x02X\x06\x00\x00\x00amountq\x03Kdu.'
+Contents: {'operation': 'responseBalance', 'amount': 100}
+
+Message from ATM
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x08\x00\x00\x00withdrawq\x02X\x04\x00\x00\x00userq\x03X\x05\x00\x00\x00aliceq\x04X\x04\x00\x00\x00authq\x05X\x00\x00\x00\x00q\x06X\x06\x00\x00\x00amountq\x07K2u.'
+Contents: {'operation': 'withdraw', 'user': 'alice', 'auth': '', 'amount': 50}
+
+Message from BANK
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x12\x00\x00\x00responseWithdrawalq\x02X\x07\x00\x00\x00successq\x03\x88X\x06\x00\x00\x00amountq\x04K2u.'
+Contents: {'operation': 'responseWithdrawal', 'success': True, 'amount': 50}
+
+Message from ATM
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x07\x00\x00\x00balanceq\x02X\x04\x00\x00\x00userq\x03X\x05\x00\x00\x00aliceq\x04X\x04\x00\x00\x00authq\x05X\x00\x00\x00\x00q\x06X\x06\x00\x00\x00amountq\x07h\x06u.'
+Contents: {'operation': 'balance', 'user': 'alice', 'auth': '', 'amount': ''}
+
+Message from BANK
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x0f\x00\x00\x00responseBalanceq\x02X\x06\x00\x00\x00amountq\x03Kdu.'
+Contents: {'operation': 'responseBalance', 'amount': 100}
+
+Message from ATM
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x05\x00\x00\x00beginq\x02X\x04\x00\x00\x00userq\x03X\x05\x00\x00\x00aliceq\x04X\x04\x00\x00\x00authq\x05X\x04\x00\x00\x001111q\x06X\x06\x00\x00\x00amountq\x07X\x00\x00\x00\x00q\x08u.'
+Contents: {'operation': 'begin', 'user': 'alice', 'auth': '1111', 'amount': ''}
+
+Message from BANK
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x14\x00\x00\x00responseStartSessionq\x02X\x04\x00\x00\x00userq\x03X\x05\x00\x00\x00aliceq\x04u.'
+Contents: {'operation': 'responseStartSession', 'user': 'alice'}
+
+Message from ATM
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x08\x00\x00\x00withdrawq\x02X\x04\x00\x00\x00userq\x03X\x05\x00\x00\x00aliceq\x04X\x04\x00\x00\x00authq\x05X\x00\x00\x00\x00q\x06X\x06\x00\x00\x00amountq\x07J\xff\xff\xff\xffu.'
+Contents: {'operation': 'withdraw', 'user': 'alice', 'auth': '', 'amount': -1}
+
+Message from BANK
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x12\x00\x00\x00responseWithdrawalq\x02X\x07\x00\x00\x00successq\x03\x89X\x06\x00\x00\x00amountq\x04X\x01\x00\x00\x000q\x05u.'
+Contents: {'operation': 'responseWithdrawal', 'success': False, 'amount': '0'}
+
+Message from ATM
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x08\x00\x00\x00withdrawq\x02X\x04\x00\x00\x00userq\x03X\x05\x00\x00\x00aliceq\x04X\x04\x00\x00\x00authq\x05X\x00\x00\x00\x00q\x06X\x06\x00\x00\x00amountq\x07K\x02u.'
+Contents: {'operation': 'withdraw', 'user': 'alice', 'auth': '', 'amount': 2}
+
+Message from BANK
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x12\x00\x00\x00responseWithdrawalq\x02X\x07\x00\x00\x00successq\x03\x88X\x06\x00\x00\x00amountq\x04K\x02u.'
+Contents: {'operation': 'responseWithdrawal', 'success': True, 'amount': 2}

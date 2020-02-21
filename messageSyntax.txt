@@ -20,14 +20,11 @@ BANK -> ATM
 After getting a begin session:
 {operation: responseStartSession, user: userID}
 
-On Bank Deposit:
-{operation: onBankDeposit, user: userID}
-
 After getting a balance request:
-{operation: returnBalance, user: userID, balance: balance}
+{operation: responseBalance, user: userID, balance: balance}
 
 AFter getting a withdrawal:
-{operation: returnBalance, user: userID, amount: amount, sucess:bool}
+{operation: responseWithdrawal, user: userID, amount: amount, sucess:bool}
 
 On an error (impossible withdrawal, wrong pin, bad balance req):
-{operation: returnError, user: userID}
+{operation: responseError, user: userID, msg: Message}
