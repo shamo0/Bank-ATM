@@ -291,3 +291,28 @@ Message from BANK
 Type: <class 'dict'>
 Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x12\x00\x00\x00responseWithdrawalq\x02X\x07\x00\x00\x00successq\x03\x88X\x06\x00\x00\x00amountq\x04K\x02u.'
 Contents: {'operation': 'responseWithdrawal', 'success': True, 'amount': 2}
+
+Message from ATM
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x07\x00\x00\x00balanceq\x02X\x04\x00\x00\x00userq\x03X\x05\x00\x00\x00aliceq\x04X\x04\x00\x00\x00authq\x05X\x00\x00\x00\x00q\x06X\x06\x00\x00\x00amountq\x07h\x06u.'
+Contents: {'operation': 'balance', 'user': 'alice', 'auth': '', 'amount': ''}
+
+Message from BANK
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x0f\x00\x00\x00responseBalanceq\x02X\x06\x00\x00\x00amountq\x03Kbu.'
+Contents: {'operation': 'responseBalance', 'amount': 98}
+
+Message from ATM
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\x05\x00\x00\x00beginq\x02X\x04\x00\x00\x00userq\x03X\x05\x00\x00\x00aliceq\x04X\x04\x00\x00\x00authq\x05X\x06\x00\x00\x00asdfasq\x06X\x06\x00\x00\x00amountq\x07X\x00\x00\x00\x00q\x08u.'
+Contents: {'operation': 'begin', 'user': 'alice', 'auth': 'asdfas', 'amount': ''}
+
+Message from BANK
+-----------------------
+Type: <class 'dict'>
+Raw pickle data: b'\x80\x03}q\x00(X\t\x00\x00\x00operationq\x01X\r\x00\x00\x00responseErrorq\x02X\x03\x00\x00\x00msgq\x03X\x0c\x00\x00\x00Invalid pin!q\x04u.'
+Contents: {'operation': 'responseError', 'msg': 'Invalid pin!'}
+

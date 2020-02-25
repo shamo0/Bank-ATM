@@ -88,7 +88,7 @@ class atm:
       self.user = None
 
     else:
-        return
+        print("Invalid Command!")
 
 
 
