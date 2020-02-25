@@ -1,0 +1,12 @@
+BANK:balance alice
+$100
+
+BANK:balance carol
+$0
+
+BANK:deposit carol 400
+$400 added to carol's account
+
+BANK:balance carol
+$400
+

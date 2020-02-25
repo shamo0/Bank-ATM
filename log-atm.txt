@@ -1,0 +1,27 @@
+ATM:balance
+Not Logged in!
+
+ATM:begin-session
+Please enter your PIN: 2222
+ATM:Bank error: Invalid pin!
+ATM:begin-session
+Please enter your PIN: 1111
+ATM:authorized
+
+ATM (alice):balance
+ATM (alice):balance: $100
+ATM (alice):withdraw 1000
+ATM (alice):Invalid amount
+
+ATM (alice):balance
+ATM (alice):balance: $100
+ATM (alice):withdraw 2
+ATM (alice):$2 dispensed
+ATM (alice):balance
+ATM (alice):balance: $98
+ATM (alice):end-session
+alice logged out
+
+ATM:balance
+Not Logged in!
+

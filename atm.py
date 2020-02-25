@@ -58,21 +58,21 @@ class atm:
         #     print("Error")
 
     elif (inString.split(" "))[0]=="withdraw":
-      if not self.loggedIn: print('Not Logged in!'); return
+      if not self.loggedIn: print('Not Logged in!\n'); return
       message['operation'] = 'withdraw'
       message['user'] = self.user
       #add auth token here
       try:
         message['amount'] = int(inString.split(" ")[1])
       except ValueError:
-        print("Could not convert to int")
+        print("Could not convert to int\n")
         return
       self.send(message)
         # bank.self.balances[self.user] -= int(inString.split(" ")[1])
         # print("$" + str(bank.self.balances[self.user]) + "dispensed")
 
     elif inString=="balance":
-      if not self.loggedIn: print('Not Logged in!'); return
+      if not self.loggedIn: print('Not Logged in!\n'); return
       message['operation']='balance'
       message['user'] = self.user
       #add auth token here
@@ -82,13 +82,13 @@ class atm:
         # print(bank.self.handleLocal(string))
 
     elif inString=="end-session":
-      if not self.loggedIn: print("Not Logged in!"); return
-      print(self.user+"logged out")
+      if not self.loggedIn: print("Not Logged in!\n"); return
+      print(self.user + " logged out\n")
       self.loggedIn = False
       self.user = None
 
     else:
-        print("Invalid Command!")
+        print("Invalid Command!\n")
 
 
 
@@ -100,26 +100,26 @@ class atm:
   # Right now it just prints any message sent from the bank to the screen.
   #====================================================================
   def handleRemote(self, inObject):
-    print("From Bank: ", inObject)
+    #print("From Bank: ", inObject)
     try:
       if inObject['operation'] == 'responseStartSession':
         self.loggedIn = True
         self.user = inObject['user']
-        print('authorized')
+        print('authorized\n')
       elif inObject['operation'] == 'responseWithdrawal':
         if inObject['success']:
           print("$" + str(inObject['amount']) + " dispensed")
         else:
-          print("Invalid amount")
+          print("Invalid amount\n")
       elif inObject['operation'] == 'responseBalance':
-        print("balance: " + str(inObject['amount']))
+        print("balance: $" + str(inObject['amount']))
       elif inObject['operation'] == "responseError":
-        print("Bank error: " + inObject['msg'])
+        print("Bank error: " + str(inObject['msg']))
       else:
         raise Exception(inObject)
     except Exception as e:
       text = traceback.format_exc()
-      print("Invalid message received from bank: "+ text)
+      print("Invalid message received from bank: "+ text+'\n')
 
 
   #====================================================================

@@ -34,26 +34,26 @@ class bank:
 
     if stringParts[0].lower() == "deposit":
       if len(stringParts) != 3:
-        print("Invalid command!")
+        print("Invalid command!\n")
         return
       try:
         self.balances[stringParts[1].lower()] += int(stringParts[2])
-        print("$"+str(stringParts[2]) + " added to " + stringParts[1]+"'s account")
+        print("$"+str(stringParts[2]) + " added to " + stringParts[1]+"'s account\n")
       except KeyError:
-        print("Account does not exist")
+        print("Account does not exist\n")
 
 
     elif (stringParts[0].lower() == "balance"):
       if len(stringParts) != 2:
-        print("Invalid command!")
+        print("Invalid command!\n")
         return
       try:
         if (stringParts[1].lower() in self.balances):
             print("$" + str(self.balances[stringParts[1].lower()]) + "\n")
       except KeyError:
-        print("Account does not exist")
+        print("Account does not exist\n")
     else:
-        print("Invalid command!")
+        print("Invalid command!\n")
   #====================================================================
   # TO DO: Modify the following function to handle the atm request
   # Every time a message is received from the ATM, it comes to this
