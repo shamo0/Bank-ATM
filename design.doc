@@ -1,9 +1,9 @@
 self.balances = {"alice":100,"bob":100,"carol":0}
 self.pins = {'alice':'1111','bob':'2222','carol':'3333'}
-
+=======================================
 Message Syntax (current) 
 
-For all of these, they will be signed by the private keys of the 
+For all of these messages, they will be signed by the private keys of the 
 bank or atm depending on the originator.
 
 ATM -> BANK, what if we used json? json.dumps(dict) before transmission, json.loads(str) on recv
@@ -37,20 +37,17 @@ AFter getting a withdrawal:
 On an error (impossible withdrawal, wrong pin, bad balance req):
 {operation: returnError, user: userID}
 
-
-
-========================================
 ==============================================
 Fundamental Security Principles
 
 Our Program checks for the input and makes sure it is a valid input before proceeding. This ensures that the program does not crash if the user inputs something invalid, providing the accessibility security principle.
 Program also uses 2 factor authentication which makes sure that the user has both card and a PIN in order to login.
-
+As for another Fundamental Security Principle, our Program utilizes the Fail-Safe Default Principle in which we deny access unless an entity is given explicit access to a users account.
 =============================================
-Future plans
+Future Plans
 
-Use RSA and generate a public and private keypair for the bank and ATM. The ATM will contact the bank after the begin-session command in plaintext. The bank will send its public key back to the ATM. Then, the ATM will generate a 16 Byte AES key (for the remainder of the session) and encrypt it with the bank’s public key before sending it. The public and private key of the bank will also be used to sign all encrypted messages between the ATM and the bank using the RS256 MAC scheme which generates keyed hashes based on the public/private keys and sha256.
-
+For the remainder of our Project, we plan to use RSA and generate a public and private keypair for the bank and ATM. The ATM will contact the bank after the begin-session command in plaintext, while the bank will send its public key back to the ATM. Following this, the ATM will generate a 16 Byte AES key (for the remainder of the session) and encrypt it with the bank’s public key before sending it. The public and private key of the bank will also be used to sign all encrypted messages between the ATM and the bank using the RS256 MAC scheme which generates keyed hashes based on the public/private keys and sha256.
+==============================================
 
 
 
