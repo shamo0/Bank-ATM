@@ -121,11 +121,18 @@ class bank:
     self.s.close()
 
   def send(self, m):
-    self.s.sendto(pickle.dumps(m), (config.local_ip, config.port_router))
+
+    #data=[msg(bytes),sig(bytes)] <-- recieved data
+    cipher_text=rsa_publickey.encrypt(data,32)[0]
+    m=base64.b64encode(cipher_text)
+    self.s.sendto(json.dumps(m), (config.local_ip, config.port_router))
+    
 
   def recvBytes(self):
     data, addr = self.s.recvfrom(config.buf_size)
     if addr[0] == config.local_ip and addr[1] == config.port_router:
+      decoded_ciphertext = base64.b64decode(data)
+      plaintext=rsa_privatekey.decrypt(decoded_message) 
       return True, data
     else:
       return False, bytes(0)
