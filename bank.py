@@ -25,10 +25,12 @@ class bank:
       self.priv = RSA.importKey(arr[0].rstrip().lstrip())
       self.pub = RSA.importKey(arr[1].rstrip().lstrip())
       self.remotePub = RSA.importKey(arr[2].rstrip().lstrip())
+      self.balances = json.loads(arr[3].rstrip().lstrip())
+      self.pins = json.loads(arr[4].rstrip().lstrip())
     self.sigmaker = PKCS1_PSS.new(self.priv)
     self.verifier = PKCS1_PSS.new(self.pub)
-    self.balances = {"alice":100,"bob":100,"carol":0}
-    self.pins = {'alice':'1111','bob':'2222','carol':'3333'}
+    #self.balances = {"cef1b974fe85a267776b3e22204965d4ecc1025ccf9606e8ba8b2009494441e9":100,"e99bc49bfc1bbf6056f0efcbd3a64c3d67c0008df3b6347ac5eb3cea907803d5":100,"c1ff3c56c4cce611916bab8ce56d469e5b1bd072ebc51d589886925d7f70e7cf":0}
+    #self.pins = {'cef1b974fe85a267776b3e22204965d4ecc1025ccf9606e8ba8b2009494441e9':'1111','e99bc49bfc1bbf6056f0efcbd3a64c3d67c0008df3b6347ac5eb3cea907803d5':'2222','c1ff3c56c4cce611916bab8ce56d469e5b1bd072ebc51d589886925d7f70e7cf':'3333'}
 
 
   #====================================================================
