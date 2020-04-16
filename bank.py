@@ -24,6 +24,7 @@ class bank:
       arr = ss.read().split(b'|')
       self.priv = RSA.importKey(arr[0].rstrip().lstrip())
       self.pub = RSA.importKey(arr[1].rstrip().lstrip())
+      self.remotePub = RSA.importKey(arr[2].rstrip().lstrip())
     self.sigmaker = PKCS1_PSS.new(self.priv)
     self.verifier = PKCS1_PSS.new(self.pub)
     self.balances = {"alice":100,"bob":100,"carol":0}
