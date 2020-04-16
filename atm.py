@@ -6,6 +6,9 @@ import json
 import pickle
 import time
 import traceback
+from Crypto.Hash import SHA256
+from Crypto.Signature import PKCS1_PSS
+from Crypto.PublicKey import RSA
 from bank import *
 
 
@@ -21,6 +24,12 @@ class atm:
     # the ATM or not and the user variable which holds the name of the
     # user currently logged in.
     #====================================================================
+    with open('ssATM.bin', 'rb') as ss:
+      arr = ss.read().split(b'|')
+      self.priv = RSA.importKey(arr[0].rstrip().lstrip())
+      self.pub = RSA.importKey(arr[1].rstrip().lstrip())
+    self.sigmaker = PKCS1_PSS.new(self.priv)
+    self.verifier = PKCS1_PSS.new(self.pub)
     self.loggedIn = False
     self.user = None
 
@@ -135,21 +144,30 @@ class atm:
     self.s.close()
 
   def send(self, m):
-    
-    #data=[msg(bytes),sig(bytes)] <-- recieved data
+    dump = pickle.dumps(m)
+    hash = SHA256.new().update(dump)
+    sig = self.sigmaker.sign(hash)
+    data = [dump, sig]
+    stringData = pickle.dumps(data)
+    #Here you have a string representation of the data in pickle format, encrypt and send
     cipher_text=rsa_publickey.encrypt(data,32)[0]
     m=base64.b64encode(cipher_text)
     self.s.sendto(json.dumps(m), (config.local_ip, config.port_router))
 
   def recvBytes(self):
-      data, addr = self.s.recvfrom(config.buf_size)
-      if addr[0] == config.local_ip and addr[1] == config.port_router:
-            decoded_ciphertext = base64.b64decode(data)
-            plaintext=rsa_privatekey.decrypt(decoded_message)                                                                                                                                
-        return True, plaintext
+    data, addr = self.s.recvfrom(config.buf_size)
+    if addr[0] == config.local_ip and addr[1] == config.port_router:
+      decoded_ciphertext = base64.b64decode(data)
+      plaintext = rsa_privatekey.decrypt(decoded_message)
+      #Here I assume a decrypted string of a pickle dump of Array[dump, sig]
+      sigArray = pickle.loads(plaintext)
+      hash = SHA256.new().update(sigArray[0])
+      verified = self.verifier(hash, sigArray[1])
+      if verified: return True, pickle.loads(sigArray[0])
+      else: return False, bytes(0)
 
-      else:
-        return False, bytes(0)
+    else:
+      return False, bytes(0)
 
   def mainLoop(self):
     self.prompt()

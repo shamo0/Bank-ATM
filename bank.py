@@ -6,6 +6,9 @@ import pickle
 from atm import *
 import traceback
 import json
+from Crypto.Hash import SHA256
+from Crypto.Signature import PKCS1_PSS
+from Crypto.PublicKey import RSA
 
 class bank:
   def __init__(self):
@@ -17,6 +20,12 @@ class bank:
     # function below this.  For example, user balances, PIN numbers
     # etc.
     #====================================================================
+    with open('ssBank.bin', 'rb') as ss:
+      arr = ss.read().split(b'|')
+      self.priv = RSA.importKey(arr[0].rstrip().lstrip())
+      self.pub = RSA.importKey(arr[1].rstrip().lstrip())
+    self.sigmaker = PKCS1_PSS.new(self.priv)
+    self.verifier = PKCS1_PSS.new(self.pub)
     self.balances = {"alice":100,"bob":100,"carol":0}
     self.pins = {'alice':'1111','bob':'2222','carol':'3333'}
 
@@ -121,19 +130,27 @@ class bank:
     self.s.close()
 
   def send(self, m):
-
-    #data=[msg(bytes),sig(bytes)] <-- recieved data
+    dump = pickle.dumps(m)
+    hash = SHA256.new().update(dump)
+    sig = self.sigmaker.sign(hash)
+    data = [dump, sig]
+    stringData = pickle.dumps(data)
+    #Here you have a string/bytes representation of the data in pickle format, encrypt and send
     cipher_text=rsa_publickey.encrypt(data,32)[0]
     m=base64.b64encode(cipher_text)
     self.s.sendto(json.dumps(m), (config.local_ip, config.port_router))
-    
 
   def recvBytes(self):
     data, addr = self.s.recvfrom(config.buf_size)
     if addr[0] == config.local_ip and addr[1] == config.port_router:
       decoded_ciphertext = base64.b64decode(data)
-      plaintext=rsa_privatekey.decrypt(decoded_message) 
-      return True, data
+      plaintext=rsa_privatekey.decrypt(decoded_message)
+      #Here I assume a decrypted string of a pickle dump of Array[dump, sig]
+      sigArray = pickle.loads(plaintext)
+      hash = SHA256.new().update(sigArray[0])
+      verified = self.verifier(hash, sigArray[1])
+      if verified: return True, pickle.loads(sigArray[0])
+      else: return False, bytes(0)
     else:
       return False, bytes(0)
 
