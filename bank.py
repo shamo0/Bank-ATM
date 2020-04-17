@@ -166,30 +166,15 @@ class bank:
       else: return False, bytes(0)
     else:
       return False, bytes(0)
+
   def sendSymKey(self):
-    self.key = os.urandom(16)
-    while True:
-      l_socks = [sys.stdin, self.s]
+    self.symKey = os.urandom(16)
+    ctext = self.encryptor.encrypt(self.symKey)
+    self.s.sendto(pickle.dumps(ctext), (config.local_ip, config.port_router))
 
-      # Get the list sockets which are readable
-      r_socks, w_socks, e_socks = select.select(l_socks, [], [])
-
-      for s in r_socks:
-        # Incoming data from the router
-        if s == self.s:
-          ret, data = self.recvBytes()
-          if ret == True:
-            if data == b"recv": break
-            else:
-              sigarr = [self.key]
-              hash = SHA256.new()
-              hash.update(sigarr[0])
-              sigarr.append(self.sigmaker.sign(hash))
-              ctext = self.encryptor.encrypt(pickle.dumps(sigarr))
-              self.s.send(ctext)
 
   def mainLoop(self):
-    self.sendSymKey
+    self.sendSymKey()
     self.prompt()
 
     while True:

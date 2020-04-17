@@ -180,24 +180,10 @@ class atm:
     else:
       return False, bytes(0)
   def waitForSymKey(self):
-    while True:
-      l_socks = [sys.stdin, self.s]
-
-      # Get the list sockets which are readable
-      r_socks, w_socks, e_socks = select.select(l_socks, [], [])
-
-      for s in r_socks:
-        # Incoming data from the router
-        if s == self.s:
-          ret, data = self.recvBytes()
-          if ret == True:
-            sigArray = pickle.loads(self.decryptor.decrypt(data))
-            hash = SHA256.new()
-            hash.update(sigArray[1])
-            if self.verifier(hash,sigArray[1]):
-              self.symkey = pickle.loads(sigArray[0])
-              self.s.send(b"recv")
-              break
+    print('waiting for session key from bank...')
+    print('ensure ATM was started first...')
+    ctext = self.s.recv(1024)
+    self.symKey = self.decryptor.decrypt(pickle.loads(ctext))
 
 
 
