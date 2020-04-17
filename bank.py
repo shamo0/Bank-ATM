@@ -5,6 +5,7 @@ import sys
 import pickle
 from atm import *
 import traceback
+import os
 import json
 from Crypto.Hash import SHA256
 from Crypto.Cipher import PKCS1_OAEP
@@ -30,7 +31,7 @@ class bank:
       self.balances = json.loads(arr[3].rstrip().lstrip())
       self.pins = json.loads(arr[4].rstrip().lstrip())
     self.sigmaker = PKCS1_PSS.new(self.priv)
-    self.verifier = PKCS1_PSS.new(self.pub)
+    self.verifier = PKCS1_PSS.new(self.remotePub)
     self.encryptor = PKCS1_OAEP.new(self.remotePub)
     self.decryptor = PKCS1_OAEP.new(self.priv)
     #self.balances = {"cef1b974fe85a267776b3e22204965d4ecc1025ccf9606e8ba8b2009494441e9":100,"e99bc49bfc1bbf6056f0efcbd3a64c3d67c0008df3b6347ac5eb3cea907803d5":100,"c1ff3c56c4cce611916bab8ce56d469e5b1bd072ebc51d589886925d7f70e7cf":0}
@@ -165,8 +166,30 @@ class bank:
       else: return False, bytes(0)
     else:
       return False, bytes(0)
+  def sendSymKey(self):
+    self.key = os.urandom(16)
+    while True:
+      l_socks = [sys.stdin, self.s]
+
+      # Get the list sockets which are readable
+      r_socks, w_socks, e_socks = select.select(l_socks, [], [])
+
+      for s in r_socks:
+        # Incoming data from the router
+        if s == self.s:
+          ret, data = self.recvBytes()
+          if ret == True:
+            if data == b"recv": break
+            else:
+              sigarr = [self.key]
+              hash = SHA256.new()
+              hash.update(sigarr[0])
+              sigarr.append(self.sigmaker.sign(hash))
+              ctext = self.encryptor.encrypt(pickle.dumps(sigarr))
+              self.s.send(ctext)
 
   def mainLoop(self):
+    self.sendSymKey
     self.prompt()
 
     while True:
