@@ -32,6 +32,7 @@ class bank:
       self.remotePub = RSA.importKey(arr[2].rstrip().lstrip())
       self.balances = json.loads(arr[3].rstrip().lstrip())
       self.pins = json.loads(arr[4].rstrip().lstrip())
+      self.hashes = json.loads(arr[5].rstrip().lstrip())
     self.sigmaker = PKCS1_PSS.new(self.priv)
     self.verifier = PKCS1_PSS.new(self.remotePub)
     self.encryptor = PKCS1_OAEP.new(self.remotePub)
@@ -90,7 +91,7 @@ class bank:
       if inObject['operation'] == 'begin':
         if self.pins[inObject['user']] == inObject['auth']: # Throws keyerror when user not in dict
           message['operation'] = 'responseStartSession'
-          message['user'] = inObject['user']
+          message['user'] = self.hashes[inObject['user']]
           self.send(message)
         else:
           message['operation'] = 'responseError'
