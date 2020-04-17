@@ -8,10 +8,12 @@ import traceback
 import os
 import json
 from Crypto.Hash import SHA256
-from Crypto.Cipher import PKCS1_OAEP
+from Crypto.Cipher import PKCS1_OAEP, AES
 from base64 import b64decode, b64encode
 from Crypto.Signature import PKCS1_PSS
 from Crypto.PublicKey import RSA
+from Crypto.Random import get_random_bytes
+from Crypto.Util.Padding import unpad
 
 class bank:
   def __init__(self):
@@ -145,9 +147,16 @@ class bank:
     data = [dump, sig]
     stringData = pickle.dumps(data)
     #Here you have a string/bytes representation of the data in pickle format, encrypt and send
-    ctextBytes = self.encryptor.encrypt(stringData)
-    b64forSend = b64encode(ctextBytes)
-    self.s.sendto(b64forSend, (config.local_ip, config.port_router))
+    # ctextBytes = self.encryptor.encrypt(stringData)
+    # b64forSend = b64encode(ctextBytes)
+    # self.s.sendto(b64forSend, (config.local_ip, config.port_router))
+    cipher = AES.new(self.symKey, AES.MODE_GCM)
+    ciphertext, tag = cipher.encrypt_and_digest(stringData)
+    json_k = ['nonce','ciphertext','tag']
+    json_v = [ b64encode(x).decode('utf-8') for x in [cipher.nonce, ciphertext, tag] ]
+    output = pickle.dumps(dict(zip(json_k,json_v)))
+
+    self.s.sendto(output,(config.local_ip, config.port_router))
     # cipher_text=rsa_publickey.encrypt(data,32)[0]
     # m=base64.b64encode(cipher_text)
     # self.s.sendto(json.dumps(m), (config.local_ip, config.port_router))
@@ -155,14 +164,21 @@ class bank:
   def recvBytes(self):
     data, addr = self.s.recvfrom(config.buf_size)
     if addr[0] == config.local_ip and addr[1] == config.port_router:
-      decodedctextBytes= b64decode(data)
-      plaintext = self.decryptor.decrypt(decodedctextBytes)
+      # decodedctextBytes= b64decode(data)
+      # plaintext = self.decryptor.decrypt(decodedctextBytes)
+      # try:
+      b64 = pickle.loads(data)
+      json_key =['nonce', 'ciphertext', 'tag' ]
+      jv = {k:b64decode(b64[k]) for k in json_key}
+
+      cipher = AES.new(self.symKey, AES.MODE_GCM, nonce=jv['nonce'])
+      plaintext = cipher.decrypt_and_verify(jv['ciphertext'], jv['tag'])
       #Here I assume a decrypted string of a pickle dump of Array[dump, sig]
       sigArray = pickle.loads(plaintext)
       hash = SHA256.new()
       hash.update(sigArray[0])
-      verified = self.verifier(hash, sigArray[1])
-      if verified: return True, pickle.loads(sigArray[0])
+      verified = self.verifier.verify(hash, sigArray[1])
+      if verified: return True, sigArray[0]
       else: return False, bytes(0)
     else:
       return False, bytes(0)
