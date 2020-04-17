@@ -8,6 +8,8 @@ import time
 import traceback
 from Crypto.Hash import SHA256
 from Crypto.Signature import PKCS1_PSS
+from Crypto.Cipher import PKCS1_OAEP
+from base64 import b64decode, b64encode
 from Crypto.PublicKey import RSA
 from bank import *
 
@@ -31,6 +33,8 @@ class atm:
       self.remotePub = RSA.importKey(arr[2].rstrip().lstrip())
     self.sigmaker = PKCS1_PSS.new(self.priv)
     self.verifier = PKCS1_PSS.new(self.pub)
+    self.encryptor = PKCS1_OAEP.new(self.remotePub)
+    self.decryptor = PKCS1_OAEP.new(self.priv)
     self.loggedIn = False
     self.user = None
 
@@ -146,23 +150,29 @@ class atm:
 
   def send(self, m):
     dump = pickle.dumps(m)
-    hash = SHA256.new().update(dump)
+    hash = SHA256.new()
+    hash.update(dump)
     sig = self.sigmaker.sign(hash)
     data = [dump, sig]
     stringData = pickle.dumps(data)
     #Here you have a string representation of the data in pickle format, encrypt and send
-    cipher_text=rsa_publickey.encrypt(data,32)[0]
-    m=base64.b64encode(cipher_text)
-    self.s.sendto(json.dumps(m), (config.local_ip, config.port_router))
+    print(stringData)
+    ctextBytes = self.encryptor.encrypt(stringData)
+    b64forSend = b64encode(ctextBytes)
+    self.s.sendto(b64forSend, (config.local_ip, config.port_router))
+    # cipher_text=rsa_publickey.encrypt(data,32)[0]
+    # m=base64.b64encode(cipher_text)
+    # self.s.sendto(json.dumps(m), (config.local_ip, config.port_router))
 
   def recvBytes(self):
     data, addr = self.s.recvfrom(config.buf_size)
     if addr[0] == config.local_ip and addr[1] == config.port_router:
-      decoded_ciphertext = base64.b64decode(data)
-      plaintext = rsa_privatekey.decrypt(decoded_message)
+      decodedctextBytes= b64decode(data)
+      plaintext = self.decryptor.decrypt(decodedctextBytes)
       #Here I assume a decrypted string of a pickle dump of Array[dump, sig]
       sigArray = pickle.loads(plaintext)
-      hash = SHA256.new().update(sigArray[0])
+      hash = SHA256.new()
+      hash.update(sigArray[0])
       verified = self.verifier(hash, sigArray[1])
       if verified: return True, pickle.loads(sigArray[0])
       else: return False, bytes(0)
