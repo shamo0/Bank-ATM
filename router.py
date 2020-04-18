@@ -64,6 +64,7 @@ class router:
     else:
       self.log.write(str(parts))
     self.log.write("\n\n")
+    self.log.flush()
     
   def mainLoop(self): 
     while True:

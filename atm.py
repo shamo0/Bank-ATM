@@ -49,7 +49,6 @@ class atm:
   # the bank.
   #====================================================================
   def handleLocal(self,inString):
-    #self.send(inString)
     message = {
       'operation':'',
       'user':'',
@@ -63,14 +62,6 @@ class atm:
       message['operation'] = 'begin'
       self.send(message)
 
-        # if inputCard == insert.strip():
-        #     self.loggedIn = True
-        #     self.user = self.users[insert] 
-        #     self.user = (inString.split(" ")[1]).split(".")[0]
-        #     print("authorized")
-        # else:
-        #     print("Error")
-
     elif (inString.split(" "))[0]=="withdraw":
       if not self.loggedIn: print('Not Logged in!\n'); return
       message['operation'] = 'withdraw'
@@ -82,8 +73,7 @@ class atm:
         print("Could not convert to int\n")
         return
       self.send(message)
-        # bank.self.balances[self.user] -= int(inString.split(" ")[1])
-        # print("$" + str(bank.self.balances[self.user]) + "dispensed")
+      
 
     elif inString=="balance":
       if not self.loggedIn: print('Not Logged in!\n'); return
@@ -91,9 +81,6 @@ class atm:
       message['user'] = self.user
       #add auth token here
       self.send(message)
-        # string = "balance " + str(self.user).lower()
-        # print(string)
-        # print(bank.self.handleLocal(string))
 
     elif inString=="end-session":
       if not self.loggedIn: print("Not Logged in!\n"); return
@@ -149,45 +136,41 @@ class atm:
     self.s.close()
 
   def send(self, m):
-    dump = pickle.dumps(m)
-    hash = SHA256.new()
-    hash.update(dump)
-    sig = self.sigmaker.sign(hash)
-    data = [dump, sig]
-    stringData = pickle.dumps(data)
-    #Here you have a string representation of the data in pickle format, encrypt and send
-    cipher = AES.new(self.symKey, AES.MODE_GCM)
-    ciphertext, tag = cipher.encrypt_and_digest(stringData)
-    json_k = ['nonce','ciphertext','tag']
-    json_v = [ b64encode(x).decode('utf-8') for x in [cipher.nonce, ciphertext, tag] ]
-    output = pickle.dumps(dict(zip(json_k,json_v)))
-    self.s.sendto(output,(config.local_ip, config.port_router))
-    # ctextBytes = self.encryptor.encrypt(stringData)
-    # b64forSend = b64encode(ctextBytes)
-    # self.s.sendto(b64forSend, (config.local_ip, config.port_router))
-    # cipher_text=rsa_publickey.encrypt(data,32)[0]
-    # m=base64.b64encode(cipher_text)
-    # self.s.sendto(json.dumps(m), (config.local_ip, config.port_router))
+    try:
+      dump = pickle.dumps(m)
+      hash = SHA256.new()
+      hash.update(dump)
+      sig = self.sigmaker.sign(hash)
+      data = [dump, sig]
+      stringData = pickle.dumps(data)
+      #Here you have a string representation of the data in pickle format, encrypt and send
+      cipher = AES.new(self.symKey, AES.MODE_GCM)
+      ciphertext, tag = cipher.encrypt_and_digest(stringData)
+      json_k = ['nonce','ciphertext','tag']
+      json_v = [ b64encode(x).decode('utf-8') for x in [cipher.nonce, ciphertext, tag] ]
+      output = pickle.dumps(dict(zip(json_k,json_v)))
+      self.s.sendto(output,(config.local_ip, config.port_router))
+    except:
+      print("Error: Could not send from ATM!")
 
   def recvBytes(self):
     data, addr = self.s.recvfrom(config.buf_size)
     if addr[0] == config.local_ip and addr[1] == config.port_router:
-      # decodedctextBytes= b64decode(data)
-      # plaintext = self.decryptor.decrypt(decodedctextBytes)
-      b64 = pickle.loads(data)
-      json_key =['nonce', 'ciphertext', 'tag' ]
-      jv = {k:b64decode(b64[k]) for k in json_key}
-
-      cipher = AES.new(self.symKey, AES.MODE_GCM, nonce=jv['nonce'])
-      plaintext = cipher.decrypt_and_verify(jv['ciphertext'], jv['tag'])
-   
-      #Here I assume a decrypted string of a pickle dump of Array[dump, sig]
-      sigArray = pickle.loads(plaintext)
-      hash = SHA256.new()
-      hash.update(sigArray[0])
-      verified = self.verifier.verify(hash, sigArray[1])
-      if verified: return True, sigArray[0]
-      else: return False, bytes(0)
+      try:
+        b64 = pickle.loads(data)
+        json_key =['nonce', 'ciphertext', 'tag' ]
+        jv = {k:b64decode(b64[k]) for k in json_key}
+        cipher = AES.new(self.symKey, AES.MODE_GCM, nonce=jv['nonce'])
+        plaintext = cipher.decrypt_and_verify(jv['ciphertext'], jv['tag'])
+        #Here I assume a decrypted string of a pickle dump of Array[dump, sig]
+        sigArray = pickle.loads(plaintext)
+        hash = SHA256.new()
+        hash.update(sigArray[0])
+        verified = self.verifier.verify(hash, sigArray[1])
+        if verified: return True, sigArray[0]
+        else: return False, bytes(0)
+      except:
+         print("Recv error: Error with receiving data from BANK")
 
     else:
       return False, bytes(0)
@@ -195,9 +178,11 @@ class atm:
   def waitForSymKey(self):
     print('waiting for session key from bank...')
     print('ensure ATM was started first...')
-    ctext = self.s.recv(1024)
-    self.symKey = self.decryptor.decrypt(pickle.loads(ctext))
-
+    try:
+      ctext = self.s.recv(1024)
+      self.symKey = self.decryptor.decrypt(pickle.loads(ctext))
+    except:
+      print("Error receiving the Key")
 
 
   def mainLoop(self):

@@ -1,8 +1,11 @@
-ATM:balance
-Not Logged in!
+m216126@ubuntu:~/Desktop/308/project308$ python3 atm.py 
+waiting for session key from bank...
+ensure ATM was started first...
+ATM:wrong command
+Invalid Command!
 
 ATM:begin-session
-Please enter your PIN: 2222
+Please enter your PIN: 333
 ATM:Bank error: Invalid pin!
 ATM:begin-session
 Please enter your PIN: 1111
@@ -10,18 +13,17 @@ ATM:authorized
 
 ATM (alice):balance
 ATM (alice):balance: $100
-ATM (alice):withdraw 1000
-ATM (alice):Invalid amount
+ATM (alice):wrong command
+Invalid Command!
+
+ATM (alice):withdraw 1  
+ATM (alice):$1 dispensed
+ATM (alice):balance
+ATM (alice):balance: $99
+ATM (alice):withdraw cat
+Could not convert to int
 
 ATM (alice):balance
-ATM (alice):balance: $100
-ATM (alice):withdraw 2
-ATM (alice):$2 dispensed
-ATM (alice):balance
-ATM (alice):balance: $98
+ATM (alice):balance: $99
 ATM (alice):end-session
 alice logged out
-
-ATM:balance
-Not Logged in!
-

@@ -1,12 +1,30 @@
-self.balances = {"alice":100,"bob":100,"carol":0}
-self.pins = {'alice':'1111','bob':'2222','carol':'3333'}
+design.txt:  
+
+How does your system store the keys and PINs? 
+Where and how do you use cryptographic schemes?
+    We have public/private key pairs stored in the ssATM/ssBank files which
+    are later used for RSA signature when we establish the connection. These 
+    signatures provide both integrity and authentiction. The communication
+    between the atm and the bank is also encrypted using AES-GCM mode in order
+    to provide confidentiality.
+
+What are the messages that the bank and the ATM exchange for each transaction? 
+Describe the format of each message.
+    Each message sent by both the atm and the bank is a json object containing 
+    the nonce, ciphertext and the tag.
+
+The structure of the cards.
+    Cards contain the hashes of the usernames, in order to provide an extra layer 
+    of security the hashes later get checked with the correct user in the ssBank 
+    when the user tries to authenticate.
+
 =======================================
 Message Syntax (current) 
 
 For all of these messages, they will be signed by the private keys of the 
 bank or atm depending on the originator.
 
-ATM -> BANK, what if we used json? json.dumps(dict) before transmission, json.loads(str) on recv
+ATM -> BANK
 =====================
 Begin session:
 {operation: begin, user: userID, Auth(pin/key): pin}
@@ -38,16 +56,7 @@ On an error (impossible withdrawal, wrong pin, bad balance req):
 {operation: returnError, user: userID}
 
 ==============================================
-Fundamental Security Principles
 
-Our Program checks for the input and makes sure it is a valid input before proceeding. This ensures that the program does not crash if the user inputs something invalid, providing the accessibility security principle.
-Program also uses 2 factor authentication which makes sure that the user has both card and a PIN in order to login.
-As for another Fundamental Security Principle, our Program utilizes the Fail-Safe Default Principle in which we deny access unless an entity is given explicit access to a users account.
-=============================================
-Future Plans
-
-For the remainder of our Project, we plan to use RSA and generate a public and private keypair for the bank and ATM. The ATM will contact the bank after the begin-session command in plaintext, while the bank will send its public key back to the ATM. Following this, the ATM will generate a 16 Byte AES key (for the remainder of the session) and encrypt it with the bank’s public key before sending it. The public and private key of the bank will also be used to sign all encrypted messages between the ATM and the bank using the RS256 MAC scheme which generates keyed hashes based on the public/private keys and sha256.
-==============================================
 
 
 
