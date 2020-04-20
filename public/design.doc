@@ -1,0 +1,60 @@
+design.txt:  
+
+How does your system store the keys and PINs? 
+Where and how do you use cryptographic schemes?
+    We have public/private key pairs stored in the ssATM/ssBank files which
+    are later used for RSA signature when we establish the connection. These 
+    signatures provide integrity, confidentiality, and authentication for the transfer of a the session key. The communication
+    between the atm and the bank is also encrypted using AES-GCM mode in order
+    to provide confidentiality, along with integrity from the tag.
+
+What are the messages that the bank and the ATM exchange for each transaction? 
+Describe the format of each message.
+    Each message sent by both the atm and the bank is a json object containing 
+    the nonce, ciphertext and the tag.
+
+The structure of the cards.
+    Cards contain random hashes, in order to provide an extra layer 
+    of security the hashes later get checked with the correct user in the ssBank 
+    when the user tries to authenticate.
+
+=======================================
+Message Syntax (current) 
+
+For all of these messages, they will be signed by the private keys of the 
+bank or atm depending on the originator.
+
+ATM -> BANK
+=====================
+Begin session:
+{operation: begin, user: userID, Auth(pin/key): pin}
+
+Withdraw:
+{operation: withdraw, user: userID, amount: amnt}
+
+Balance:
+{operation: balance, user: userID}
+
+
+BANK -> ATM
+=====================
+After getting a begin session:
+{operation: responseStartSession, user: userID}
+
+On Bank Deposit:
+{operation: onBankDeposit, user: userID}
+
+After getting a balance request:
+{operation: returnBalance, user: userID, balance: balance}
+
+AFter getting a withdrawal:
+{operation: returnBalance, user: userID, amount: amount, success:bool}
+
+On an error (impossible withdrawal, wrong pin, bad balance req):
+{operation: returnError, user: userID}
+
+==============================================
+
+
+
+

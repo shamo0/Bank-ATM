@@ -1,6 +1,0 @@
-----------------------------------To do---------------------------------
-|    1 hashing pins, using db to store, limiting attempts in db        |    
-|    2 hardcoding rsa pub/priv keys in databases and using random      |
-|    generator to make sym keys + encyrpt and send with asym keys      |
-|    3 hmac'ing messages based on key sent after sym key sent          |
-------------------------------------------------------------------------

@@ -1,0 +1,21 @@
+m216126@ubuntu:~/Desktop/308/project308$ python3 bank.py 
+BANK:balance alice
+$100
+
+BANK:balance carol
+$0
+
+BANK:deposit alice 1
+$1 added to alice's account
+
+BANK:deposit alice invalid amount
+Invalid command!
+
+BANK:deposit alice -1
+Invalid amount
+
+BANK:despoit alice 0
+Invalid command!
+
+BANK:wrong command
+Invalid command!
