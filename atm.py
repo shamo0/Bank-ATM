@@ -66,7 +66,6 @@ class atm:
       if not self.loggedIn: print('Not Logged in!\n'); return
       message['operation'] = 'withdraw'
       message['user'] = self.user
-      #add auth token here
       try:
         message['amount'] = int(inString.split(" ")[1])
       except ValueError:
@@ -79,7 +78,6 @@ class atm:
       if not self.loggedIn: print('Not Logged in!\n'); return
       message['operation']='balance'
       message['user'] = self.user
-      #add auth token here
       self.send(message)
 
     elif inString=="end-session":

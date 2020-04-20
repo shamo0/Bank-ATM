@@ -4,9 +4,9 @@ How does your system store the keys and PINs?
 Where and how do you use cryptographic schemes?
     We have public/private key pairs stored in the ssATM/ssBank files which
     are later used for RSA signature when we establish the connection. These 
-    signatures provide both integrity and authentiction. The communication
+    signatures provide integrity, confidentiality, and authentication for the transfer of a the session key. The communication
     between the atm and the bank is also encrypted using AES-GCM mode in order
-    to provide confidentiality.
+    to provide confidentiality, along with integrity from the tag.
 
 What are the messages that the bank and the ATM exchange for each transaction? 
 Describe the format of each message.
@@ -14,7 +14,7 @@ Describe the format of each message.
     the nonce, ciphertext and the tag.
 
 The structure of the cards.
-    Cards contain the hashes of the usernames, in order to provide an extra layer 
+    Cards contain random hashes, in order to provide an extra layer 
     of security the hashes later get checked with the correct user in the ssBank 
     when the user tries to authenticate.
 
@@ -30,13 +30,11 @@ Begin session:
 {operation: begin, user: userID, Auth(pin/key): pin}
 
 Withdraw:
-{operation: withdraw, user: userID, Auth(pin/key): pin, amount: amnt}
+{operation: withdraw, user: userID, amount: amnt}
 
 Balance:
-{operation: balance, user: userID, Auth(pin/key): pin}
+{operation: balance, user: userID}
 
-end-session: 
-just end for now, could implement session tokens later
 
 BANK -> ATM
 =====================

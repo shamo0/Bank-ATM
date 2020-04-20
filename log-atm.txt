@@ -8,7 +8,7 @@ ATM:begin-session
 Please enter your PIN: 333
 ATM:Bank error: Invalid pin!
 ATM:begin-session
-Please enter your PIN: 1111
+Please enter your PIN:
 ATM:authorized
 
 ATM (alice):balance
