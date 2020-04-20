@@ -1,4 +1,4 @@
-# project308
+# ATM/BANK
 
 ### In this project, we designed and implemented a prototype ATM/Bank system. 
 * The bank should be set up with three user accounts, for Alice, Bob, and Carol. Alice's and Bob's balance should be initialized to $100, and Carol's balance should be initialized to $0. In addition to the ATM, bank, and router programs, you will specify the files Alice.card, Bob.card, and Carol.card, and PINs defined for these users.
